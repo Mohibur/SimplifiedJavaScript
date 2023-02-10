@@ -1,4 +1,25 @@
 "use strict";
+
+/*
+	* extension added to
+	* * Object 
+	* * String
+	* * Array
+	* * Date
+*/
+
+// all Objects
+Object.prototype.isObject = () => true;
+Object.prototype.isString = () => false;
+Object.prototype.isFunction = () => false;
+Object.prototype.isArray = () => false;
+
+// Function
+Object.prototype.isFunction = () => true;
+
+// String
+String.prototype.isString = () => true;
+
 String.prototype.matchCount = function(reg) {
 	return ([...this.matchAll(reg)] || []).length;
 }
@@ -42,39 +63,25 @@ String.prototype.encode = function() {
 //////////////////////////////////Array Class///////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
+Array.prototype.isArray = () => true;
+
 Array.prototype.each = Array.prototype.forEach;
 
 Array.prototype.contains = Array.prototype.includes;
 
 Array.prototype.has = Array.prototype.includes;
 
-Array.prototype.match = function(v, s) {
-	if (typeof s == "undefined" || s == null || !isNaN(parseInt(s))) s = 0;
-	for (let i = s; i < this.length; i++) {
-		if (this[i].match(v)) return this[i];
-	}
-}
-
-Array.prototype.matchesAll = function(v, s) {
-	if (typeof s == "undefined" || s == null || !isNaN(parseInt(s))) s = 0;
-	let r = [];
-	for (let i = s; i < this.length; i++) {
-		if (this[i].match(v)) r.push(this[i]);
-	}
-	return r;
-}
-
 ////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////Date Class///////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
 //\\ FORMATS
-Date.prototype.formattedDate = function() {
+Date.prototype.iso8601Date = Date.prototype.formattedDate = function() {
 	return (this.getFullYear()) + "-" + this.paddedMonth() + "-" + this.paddedDate();
 }
 
 Date.prototype.jpFormattedDate = function() {
-	return (this.getFullYear()) + "年" + this.paddedMonth() + "月" + this.paddedMonth() + "日";
+	return (this.getFullYear()) + "年" + this.paddedMonth() + "月" + this.paddedDate() + "日";
 }
 
 Date.prototype.toString = function() {
@@ -91,7 +98,12 @@ Date.prototype.getShortMonth = function() {
 
 Date.prototype.paddedMonth = function() {
 	let m = this.getMonth() + 1;
-	return m < 10 ? "0" + m : m + "";
+	return m < 10 ? "0" + m : "" + m;
+}
+
+Date.prototype.paddedDate = function() {
+	let d = this.getDate();
+	return d < 10 ? "0" + d : "" + d;
 }
 
 Date.prototype.getFullDay = function() {
@@ -106,24 +118,25 @@ Date.prototype.printCalendarFirstDate = function() {
 	return new Date(this.getFullYear(), this.getMonth(), 1 - new Date(this.getFullYear(), this.getMonth(), 1).getDay());
 };
 
-Date.prototype.paddedDate = function() {
-	return this.getDate() < 10 ? "0" + this.getDate() : this.getDate() + "";
-}
-
-
 ////////////////////////////////////////////////////////////////////////////////
 
 //\\ JUMP
 Date.prototype.nextMonth = function() {
-	return new Date(this.getFullYear(), this.getMonth() + 1, this.getDate());
+	let test = new Date(this.getFullYear(), this.getMonth() + 1, this.getDate());
+	if (this.getMonth() + 1 != test.getMonth() && !(this.getMonth() == 0 && test.getMonth() == 11)) {
+		test = new Date(test.getFullYear(), test.getMonth() - 1);
+		return test.lastDate();
+	}
+	return test;
 }
 
-Date.prototype.prevMonth = function() {
-	return new Date(this.getFullYear(), this.getMonth() - 1, this.getDate());
-}
-
-Date.prototype.lastMonth = function() {
-	return new Date(this.getFullYear(), this.getMonth() - 1, this.getDate());
+Date.prototype.lastMonth = Date.prototype.prevMonth = function() {
+	let test = new Date(this.getFullYear(), this.getMonth() - 1, this.getDate());
+	if (this.getMonth() - 1 != test.getMonth()) {
+		test = new Date(test.getFullYear(), test.getMonth() + 1);
+		return test.lastDate();
+	}
+	return test;
 }
 
 Date.prototype.nextYear = function() {
@@ -221,3 +234,4 @@ Date.prototype.isFri = function() {
 Date.prototype.isSat = function() {
 	return this.getDay() == 6;
 }
+

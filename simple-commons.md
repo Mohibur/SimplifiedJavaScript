@@ -107,7 +107,7 @@
 <h3>Return value</h3>
 
 &emsp;`Boolean`<br>
-&emsp;&emsp; `0, false == false` and `1, true == true`
+&emsp;&emsp; `(0, false) == false` and `(1, true) == true`
 
 &emsp;`NaN`<br>
 &emsp;&emsp; if not a valid boolean 
@@ -156,110 +156,291 @@
 
 ---
 
+<h2>String.encode()</h2>
+
+<h3>Description</h3>
+<h3>Encoding the following characters: <br>
+&emsp;&emsp;`&` to `&amp;amp;`<br>
+&emsp;&emsp;` ` (whitespace) to `&amp;nbsp;`<br>
+&emsp;&emsp;`\t` to `&amp;empsp;`<br>
+&emsp;&emsp;`&lt;` to `&amp;lt;`<br>
+&emsp;&emsp;`&gt;` to `&amp;gt;`</h3>
+
+<h3>Syntax</h3>
+
+```javascript
+encode()
+```
+
+<h3>Parameters</h3>
+
+&emsp;`None`<br>
 
 
+<h3>Return value</h3>
 
-String.prototype.isFalse = function(v) {
-	if (this === "0" || this.toLowerCase() === "false") return true;
-	return false;
-}
+&emsp;`None`<br>
 
-String.prototype.encode = function() {
-	return this
-		.replaceAll(/&/g, "&amp;")
-		.replaceAll(/ /g, "&nbsp;")
-		.replaceAll(/\t/g, "&emsp;")
-		.replaceAll(/</g, "&lt;")
-		.replaceAll(/>/g, "&gt;")
-}
+---
 
-////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////Array Class///////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
+# Array Class
 
-Array.prototype.each = function(f) {
-	this.forEach((e, i) => f(e, i));
-}
+---
 
-Array.prototype.contains = function(v) {
-	return this.includes(v);
-}
+<h2>Array.each(f)</h2>
 
-Array.prototype.has = function(v) {
-	return this.includes(v);
-}
+<h3>Description</h3>
 
-Array.prototype.match = function(v, s) {
-	if (!(v instanceof RegExp)) throw "Match exptected to be instance of RegExp";
-	if (typeof s == "undefined" || s == null || !isNaN(parseInt(s))) s = 0;
-	for (let i = s; i < this.length; i++) {
-		if (this[i].match(v)) return this[i];
-	}
-}
+<h2>Alias of [Array.prototype.forEach](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach)</h2>
 
-Array.prototype.matchesAll = function(v, s) {
-	if (!(v instanceof RegExp)) throw "Match exptected to be instance of RegExp";
-	if (typeof s == "undefined" || s == null || !isNaN(parseInt(s))) s = 0;
-	let r = [];
-	for (let i = s; i < this.length; i++) {
-		if (this[i].match(v)) r.push(this[i]);
-	}
-	return r;
-}
+<h3>Syntax</h3>
 
-////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////Date Class///////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
+```javascript
+encode()
+```
 
-//\\ FORMATS
-Date.prototype.formattedDate = function() {
-	return (this.getFullYear()) + "-" + this.paddedMonth() + "-" + this.paddedDate();
-}
+<h3>Parameters</h3>
 
-Date.prototype.jpFormattedDate = function() {
-	return (this.getFullYear()) + "年" + this.paddedMonth() + "月" + this.paddedMonth() + "日";
-}
-
-Date.prototype.toString = function() {
-	return this.formattedDate();
-}
-
-Date.prototype.getFullMonth = function() {
-	return ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"][this.getMonth()];
-}
-
-Date.prototype.getShortMonth = function() {
-	return this.getFullMonth().slice(0, 3);
-}
-
-Date.prototype.paddedMonth = function() {
-	let m = this.getMonth() + 1;
-	return m < 10 ? "0" + m : m + "";
-}
-
-Date.prototype.getFullDay = function() {
-	return ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][this.getDay()];
-}
-
-Date.prototype.getShortDay = function() {
-	return this.getFullDay().slice(0, 3);
-}
-
-Date.prototype.printCalendarFirstDate = function() {
-	return new Date(this.getFullYear(), this.getMonth(), 1 - new Date(this.getFullYear(), this.getMonth(), 1).getDay());
-};
-
-Date.prototype.paddedDate = function() {
-	return this.getDate() < 10 ? "0" + this.getDate() : this.getDate() + "";
-}
+&emsp;`None`<br>
 
 
-/////////////////////////////////////////////////////////
+<h3>Return value</h3>
 
-//\\ JUMP
-Date.prototype.nextMonth = function() {
-	return new Date(this.getFullYear(), this.getMonth() + 1, this.getDate());
-}
+&emsp;`None`<br>
+
+---
+
+<h3>Array.contains, Array.has</h3>
+
+<h3>Description</h3>
+<h3>&emsp;Alias for [Array.prototype.includes](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/includes)</h3>
+
+---
+
+# Date Class
+
+---
+
+<h3>Date.toString, Date.formattedDate(), Date.iso8601Date()</h3>
+
+<h3>Description</h3>
+<h4>[Date](https://en.wikipedia.org/wiki/ISO_8601). Format: YYYY-MM-DD</h4>
+
+<h3>Parameters</h3>
+
+&emsp;`None`<br>
+
+
+<h3>Return value</h3>
+
+&emsp;`String`<br>
+&emsp;&emsp;Returning formatted date
+
+---
+
+<h3>Date.jpFormattedDate()</h3>
+
+<h3>Description</h3>
+<h4>Return string as following format: YYYY年MM月DD日</h4>
+
+<h3>Parameters</h3>
+
+&emsp;`None`<br>
+
+
+<h3>Return value</h3>
+
+&emsp;`String`<br>
+&emsp;&emsp;Returning formatted date in Japanese standard
+
+<h3>Example</h3>
+&emsp;&emsp;2023年01月15日
+
+---
+
+<h3>Date.getFullMonth()</h3>
+
+<h3>Description</h3>
+<h4>Return full name of month in Gerogian Calendar</h4>
+<h3>Parameters</h3>
+
+&emsp;`None`<br>
+
+
+<h3>Return value</h3>
+
+&emsp;`String`<br>
+&emsp;&emsp; Returns one of the following <br>
+&emsp;&emsp;&emsp;- `January`<br>
+&emsp;&emsp;&emsp;- `February`<br>
+&emsp;&emsp;&emsp;- `March` <br>
+&emsp;&emsp;&emsp;- `April`<br>
+&emsp;&emsp;&emsp;- `May`<br>
+&emsp;&emsp;&emsp;- `June`<br>
+&emsp;&emsp;&emsp;- `July`<br>
+&emsp;&emsp;&emsp;- `August`<br>
+&emsp;&emsp;&emsp;- `September`<br>
+&emsp;&emsp;&emsp;- `October`<br>
+&emsp;&emsp;&emsp;- `November`<br>
+&emsp;&emsp;&emsp;- `December`</h4>
+
+---
+
+<h3>Date.getShortMonth()</h3>
+
+<h3>Description</h3>
+<h4>Return first three letters of name of month in Gerogian Calendar</h4>
+
+<h3>Parameters</h3>
+
+&emsp;`None`<br>
+
+<h3>Return value</h3>
+
+&emsp;`String`<br>
+&emsp;&emsp; Returns one of the following <br>
+&emsp;&emsp;&emsp;- `Jan`<br>
+&emsp;&emsp;&emsp;- `Feb`<br>
+&emsp;&emsp;&emsp;- `Mar` <br>
+&emsp;&emsp;&emsp;- `Apr`<br>
+&emsp;&emsp;&emsp;- `May`<br>
+&emsp;&emsp;&emsp;- `Jun`<br>
+&emsp;&emsp;&emsp;- `Jul`<br>
+&emsp;&emsp;&emsp;- `Aug`<br>
+&emsp;&emsp;&emsp;- `Sep`<br>
+&emsp;&emsp;&emsp;- `Oct`<br>
+&emsp;&emsp;&emsp;- `Nov`<br>
+&emsp;&emsp;&emsp;- `Dec`</h4>
+
+---
+
+<h3>Date.getFullDay()</h3>
+
+<h3>Description</h3>
+<h4>Returns the full name of week day</h4>
+
+<h3>Parameters</h3>
+
+&emsp;`None`<br>
+
+<h3>Return value</h3>
+
+&emsp;`String`<br>
+&emsp;&emsp; Returns one of the following <br>
+&emsp;&emsp;&emsp;- `Sunday`<br>
+&emsp;&emsp;&emsp;- `Monday`<br>
+&emsp;&emsp;&emsp;- `Tuesday` <br>
+&emsp;&emsp;&emsp;- `Wednesday`<br>
+&emsp;&emsp;&emsp;- `Thursday`<br>
+&emsp;&emsp;&emsp;- `Friday`<br>
+&emsp;&emsp;&emsp;- `Saturday`</h4>
+
+---
+
+<h3>Date.getShortDay()</h3>
+
+<h3>Description</h3>
+<h4>Returns first three letters of name of week day</h4>
+
+<h3>Parameters</h3>
+
+&emsp;`None`<br>
+
+<h3>Return value</h3>
+
+&emsp;`String`<br>
+<h4>&emsp;&emsp; Returns one of the following <br>
+&emsp;&emsp;&emsp;- `Sun`<br>
+&emsp;&emsp;&emsp;- `Mon`<br>
+&emsp;&emsp;&emsp;- `Tue` <br>
+&emsp;&emsp;&emsp;- `Wed`<br>
+&emsp;&emsp;&emsp;- `Thu`<br>
+&emsp;&emsp;&emsp;- `Fri`<br>
+&emsp;&emsp;&emsp;- `Sat`</h4>
+
+---
+
+<h3>Date.nextMonth()</h3>
+
+<h3>Description</h3>
+<h4>Returns the next month</h4>
+
+<h3>Parameters</h3>
+
+&emsp;`None`<br>
+
+<h3>Return value</h3>
+
+<h4>&emsp;`Date`<br>
+&emsp;&emsp; Returns the next month <br>
+</h4>
+
+<h3>Example</h3>
+
+```javascript
+// example 1
+let d = new Date("2023-03-31");
+d.nextMonth();
+> Date Fri Mar 31 2023 09:00:00 GMT+0900 (Japan Standard Time)
+
+// example 2
+let d = new Date("2023-01-31");
+> Date Tue Jan 31 2023 09:00:00 GMT+0900 (Japan Standard Time)
+
+d.nextMonth();
+> Date Tue Feb 28 2023 00:00:00 GMT+0900 (Japan Standard Time)
+
+// example 3
+let d = new Date("2023-02-09");
+> Date Thu Feb 09 2023 09:00:00 GMT+0900 (Japan Standard Time)
+
+d.nextMonth()
+> Date Thu Mar 09 2023 00:00:00 GMT+0900 (Japan Standard Time)
+
+```
+
+---
+
+<h3>Date.prevMonth(), Date.lastMonth()</h3>
+
+<h3>Description</h3>
+<h4>Returns Previous month</h4>
+
+<h3>Parameters</h3>
+
+&emsp;`None`<br>
+
+<h3>Return value</h3>
+
+<h4>&emsp;`Date`<br>
+&emsp;&emsp; Returns the next month <br>
+</h4>
+
+<h3>Example</h3>
+
+```javascript
+// example 1
+let d = new Date("2023-03-31");
+d.nextMonth();
+> Date Fri Mar 31 2023 09:00:00 GMT+0900 (Japan Standard Time)
+
+// example 2
+let d = new Date("2023-01-31");
+> Date Tue Jan 31 2023 09:00:00 GMT+0900 (Japan Standard Time)
+
+d.nextMonth();
+> Date Tue Feb 28 2023 00:00:00 GMT+0900 (Japan Standard Time)
+
+// example 3
+let d = new Date("2023-02-09");
+> Date Thu Feb 09 2023 09:00:00 GMT+0900 (Japan Standard Time)
+
+d.nextMonth()
+> Date Thu Mar 09 2023 00:00:00 GMT+0900 (Japan Standard Time)
+
+```
+
+---
 
 Date.prototype.prevMonth = function() {
 	return new Date(this.getFullYear(), this.getMonth() - 1, this.getDate());

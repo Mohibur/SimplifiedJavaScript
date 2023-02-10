@@ -27,7 +27,9 @@ Document.prototype.text = Document.prototype.Text = function(v) {
 /*** HTMLElement */
 
 HTMLElement.prototype.$ = function(sel) { return this.querySelector(sel); }
-HTMLElement.prototype.$$ = function(sel) { return [...this.querySelectorAll(sel)]; }
+HTMLElement.prototype.$$ = function(sel) {
+	return [...this.querySelectorAll(sel)];
+}
 
 HTMLElement.prototype.Parent = function() {
 	return this.parentElement;
@@ -724,15 +726,8 @@ $.each = function(obj, f) {
 	}
 }
 
-$.loop = function() {
-	let f = arguments[0];
-	let arg1 = 1, arg2 = 1;
-	if (arguments.length == 2) {
-		arg2 = arguments[1];
-	} else if (arguments.length >= 3) {
-		arg1 = arguments[1];
-		arg2 = arguments[2];
-	}
+$.loop = function(f, arg1, arg2) {
+	arg2 = typeof arg2 == "undefined" ? 1 : arg2;
 	for (let i = arg1; i <= arg2; i++) {
 		f(i);
 	}
@@ -780,3 +775,6 @@ $.ua = function() {
 	if (isBlink) return { browser: "blink" };
 	return {};
 }
+
+
+
