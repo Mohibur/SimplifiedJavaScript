@@ -76,16 +76,40 @@ Array.prototype.has = Array.prototype.includes;
 ////////////////////////////////////////////////////////////////////////////////
 
 //\\ FORMATS
+
+Date.PadZero = function (n, l) {
+  n = n.toString();
+  let count = l - n.length;
+  if (count <= 0) return n;
+  let r = []
+  for (let i = 0; i < count; i++) r.push("0");
+  r.push(n);
+  return r.join("");
+}
+
+Date.prototype.iso8601Datetime = Date.prototype.formattedDatetime = function() {
+	return this.getFullYear() + //
+    "-" + Date.PadZero(this.getMonth() + 1, 2) + //
+    "-" + Date.PadZero(this.getDate(), 2) + //
+    "T" + Date.PadZero(this.getHours(), 2) + //
+    ":" + Date.PadZero(this.getMinutes(), 2) + //
+    ":" + Date.PadZero(this.getSeconds(), 2);
+}
+
 Date.prototype.iso8601Date = Date.prototype.formattedDate = function() {
-	return (this.getFullYear()) + "-" + this.paddedMonth() + "-" + this.paddedDate();
+  return (this.getFullYear()) + "-" + Date.PadZero(this.getMonth() + 1, 2) + "-" + Date.PadZero(this.getDate(), 2) ;
 }
 
 Date.prototype.jpFormattedDate = function() {
-	return (this.getFullYear()) + "年" + this.paddedMonth() + "月" + this.paddedDate() + "日";
+  return (this.getFullYear()) + "年" + Date.PadZero(this.getMonth() + 1, 2) + "月" + Date.PadZero(this.getDate(), 2) + "日";
 }
 
 Date.prototype.toString = function() {
 	return this.formattedDate();
+}
+
+Date.prototype.timeToString = function() {
+	return this.formattedDateTime();
 }
 
 Date.prototype.getFullMonth = function() {
@@ -96,15 +120,6 @@ Date.prototype.getShortMonth = function() {
 	return this.getFullMonth().slice(0, 3);
 }
 
-Date.prototype.paddedMonth = function() {
-	let m = this.getMonth() + 1;
-	return m < 10 ? "0" + m : "" + m;
-}
-
-Date.prototype.paddedDate = function() {
-	let d = this.getDate();
-	return d < 10 ? "0" + d : "" + d;
-}
 
 Date.prototype.getFullDay = function() {
 	return ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][this.getDay()];

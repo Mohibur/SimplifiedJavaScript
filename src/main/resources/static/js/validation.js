@@ -27,13 +27,13 @@ class Validation {
 		if (typeof expected !== typeof result) {
 			let str = this.#failMessage(msg) + "Type dose not match, \nexpected type: " + (typeof expected) + "\nfound type: " + (typeof result);
 			if (typeof this.#onFail == "undefined") throw str;
-			else this.#onFail(str);
+			else this.#onFail(str, new Error());
 			return;
 		}
 		if (expected != result) {
 			let str = this.#failMessage(msg) + "Dose not match, \nexpected: " + (expected) + "\nfound: " + (result);
 			if (typeof this.#onFail == "undefined") throw str;
-			else this.#onFail(str);
+			else this.#onFail(str, new Error());
 			return;
 		}
 
@@ -44,7 +44,7 @@ class Validation {
 		if (result !== null) {
 			let str = this.#failMessage(msg) + "Expected null. \nfound: " + result.toString();
 			if (typeof this.#onFail == "undefined") throw str;
-			else this.#onFail(str);
+			else this.#onFail(str, new Error());
 			return;
 		}
 		this.#onSuccess();
@@ -54,7 +54,7 @@ class Validation {
 		if (result !== true) {
 			let str = this.#failMessage(msg) + "Expected true(boolean). \nfound: " + result.toString();
 			if (typeof this.#onFail == "undefined") throw str;
-			else this.#onFail(str);
+			else this.#onFail(str, new Error());
 			return;
 		}
 		this.#onSuccess();
@@ -64,7 +64,17 @@ class Validation {
 		if (result !== false) {
 			let str = this.#failMessage(msg) + "Expected false(boolean). \nfound: " + result.toString();
 			if (typeof this.#onFail == "undefined") throw str;
-			else this.#onFail(str);
+			else this.#onFail(str, new Error());
+			return;
+		}
+		this.#onSuccess();
+	}
+
+	NaN(result, msg) {
+		if (!isNaN(result)) {
+			let str = this.#failMessage(msg) + "Expected NaN. \nfound: " + result;
+			if (typeof this.#onFail == "undefined") throw str;
+			else this.#onFail(str, new Error());
 			return;
 		}
 		this.#onSuccess();

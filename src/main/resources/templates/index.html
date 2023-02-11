@@ -1,63 +1,28 @@
 <!doctype html>
 <html>
 <body>
+	<style>
+table tr td {
+	border: 1px solid black;
+	padding: 3px;
+	vertical-align: top;
+}
+table tr td iframe {
+	min-height: 400px;
+}
+</style>
 	<script src="/js/simple-common.js"></script>
 	<script src="/js/simple-html.js"></script>
 	<script src="/js/validation.js"></script>
-
-	<div id="testwindow"></div>
-	<script>
-window.w = {}
-window.w.fail = 0;
-window.w.success = 0;
-window.w.getStackTrace = function() {
-	  var obj = {};
-	  Error.captureStackTrace(obj, w.getStackTrace);
-	  return obj.stack;
-	};
-
-window.w.onFail = function(msg) {
-	let tw = document.querySelector("#testwindow");
-	let d = document.createElement("div");
-	tw.appendChild(d);
-	d.innerHTML = msg + "<br>" + w.getStackTrace();
-	d.border = "1px solid gray";
-	w.fail++;
-}
-
-window.w.onSuccess = function(msg) {
-	w.success++;
-}
-
-let v = new Validation(w.onFail, w.onSuccess);
-
-(function(){
-	
-})();
-
-// testing function
-(function(){
-	let x = function() {};
-	v.true(x.isFunction());
-}());
-
-//testing String
-(function(){
-	v.true("".isString());
-	v.true("".isObject());
-}());
-
-
-(function(){
-	v.equals(0, "".matchCount("a"));
-	v.equals(1, "a".matchCount("a"));
-	v.equals(3, "aaa".matchCount("a"));
-	v.equals(1, "aaa".matchCount("aaa"));
-	v.equals(1, "abaca".matchCount(/a/g));
-}());
-
-
-
+	<table style="height: 100%">
+		<tr>
+			<td style="width: 40%; height: 100%"><div id="testwindow"></div></td>
+			<td><iframe id="f" src="/static/editor.html"
+					style="width: 99.5%;"> </iframe></td>
+		</tr>
+	</table>
+<script src="/js/test-cases.js"></script>
+<script>
 
 //////////////end
 let tw = document.querySelector("#testwindow");
