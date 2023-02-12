@@ -77,31 +77,31 @@ Array.prototype.has = Array.prototype.includes;
 
 //\\ FORMATS
 
-Date.PadZero = function (n, l) {
-  n = n.toString();
-  let count = l - n.length;
-  if (count <= 0) return n;
-  let r = []
-  for (let i = 0; i < count; i++) r.push("0");
-  r.push(n);
-  return r.join("");
+Date.PadZero = function(n, l) {
+	n = n.toString();
+	let count = l - n.length;
+	if (count <= 0) return n;
+	let r = []
+	for (let i = 0; i < count; i++) r.push("0");
+	r.push(n);
+	return r.join("");
 }
 
 Date.prototype.iso8601Datetime = Date.prototype.formattedDatetime = function() {
 	return this.getFullYear() + //
-    "-" + Date.PadZero(this.getMonth() + 1, 2) + //
-    "-" + Date.PadZero(this.getDate(), 2) + //
-    "T" + Date.PadZero(this.getHours(), 2) + //
-    ":" + Date.PadZero(this.getMinutes(), 2) + //
-    ":" + Date.PadZero(this.getSeconds(), 2);
+		"-" + Date.PadZero(this.getMonth() + 1, 2) + //
+		"-" + Date.PadZero(this.getDate(), 2) + //
+		"T" + Date.PadZero(this.getHours(), 2) + //
+		":" + Date.PadZero(this.getMinutes(), 2) + //
+		":" + Date.PadZero(this.getSeconds(), 2);
 }
 
 Date.prototype.iso8601Date = Date.prototype.formattedDate = function() {
-  return (this.getFullYear()) + "-" + Date.PadZero(this.getMonth() + 1, 2) + "-" + Date.PadZero(this.getDate(), 2) ;
+	return (this.getFullYear()) + "-" + Date.PadZero(this.getMonth() + 1, 2) + "-" + Date.PadZero(this.getDate(), 2);
 }
 
 Date.prototype.jpFormattedDate = function() {
-  return (this.getFullYear()) + "年" + Date.PadZero(this.getMonth() + 1, 2) + "月" + Date.PadZero(this.getDate(), 2) + "日";
+	return (this.getFullYear()) + "年" + Date.PadZero(this.getMonth() + 1, 2) + "月" + Date.PadZero(this.getDate(), 2) + "日";
 }
 
 Date.prototype.toString = function() {
@@ -138,18 +138,17 @@ Date.prototype.printCalendarFirstDate = function() {
 //\\ JUMP
 Date.prototype.nextMonth = function() {
 	let test = new Date(this.getFullYear(), this.getMonth() + 1, this.getDate());
-	if (this.getMonth() + 1 != test.getMonth() && !(this.getMonth() == 0 && test.getMonth() == 11)) {
-		test = new Date(test.getFullYear(), test.getMonth() - 1);
-		return test.lastDate();
+	if (this.getMonth() + 1 != test.getMonth() && this.getFullYear() + 1 != test.getFullYear()) {
+		return new Date(test.getFullYear(), test.getMonth() - 1).lastDate();
 	}
 	return test;
 }
 
 Date.prototype.lastMonth = Date.prototype.prevMonth = function() {
 	let test = new Date(this.getFullYear(), this.getMonth() - 1, this.getDate());
-	if (this.getMonth() - 1 != test.getMonth()) {
-		test = new Date(test.getFullYear(), test.getMonth() + 1);
-		return test.lastDate();
+
+	if (this.getMonth() - 1 != test.getMonth() && this.getFullYear() - 1 != test.getFullYear()) {
+		return new Date(test.getFullYear(), test.getMonth() - 1).lastDate();
 	}
 	return test;
 }
@@ -158,16 +157,17 @@ Date.prototype.nextYear = function() {
 	return new Date(this.getFullYear() + 1, this.getMonth(), this.getDate());
 }
 
-Date.prototype.lastYear = function() {
-	return new Date(this.getFullYear() - 1, this.getMonth(), this.getDate());
-}
+Date.prototype.prevYear = Date.prototype.lastYear = function() {
 
-Date.prototype.prevYear = function() {
-	return new Date(this.getFullYear() - 1, this.getMonth(), this.getDate());
+	let test = new Date(this.getFullYear() - 1, this.getMonth(), this.getDate());
+	if (this.getMonth() != test.getMonth()) {
+		return new Date(test.getFullYear() + "-02-28")
+	}
+	return test;
 }
 
 Date.prototype.firstDate = function() {
-	return new Date(this.getFullYear(), this.getMonth() - 1, 1);
+	return new Date(this.getFullYear(), this.getMonth(), 1);
 }
 
 Date.prototype.lastDate = function() {
@@ -181,6 +181,7 @@ Date.prototype.tomorrow = function() {
 Date.prototype.yesterday = function() {
 	return new Date(this.getFullYear(), this.getMonth(), this.getDate() - 1)
 }
+
 ////////////////////////////////////
 
 //\\ Math
@@ -206,47 +207,66 @@ Date.prototype.isSameDate = function(d2) {
 	return this.getFullYear() == d2.getFullYear() && this.getMonth() == d2.getMonth() && this.getDate() == d2.getDate();
 }
 
-Date.prototype.isOldMonth = function(d) {
+// TODO
+// Is this old Month
+Date.prototype.amIPastMonth = Date.prototype.isPastMonth = function(d) {
 	if ((d.getFullYear() < this.getFullYear()) || (d.getFullYear() == this.getFullYear() && d.getMonth() < this.getMonth())) return true;
 	return false;
 }
 
-Date.prototype.isFuture = function(d) {
+// TODO
+// Is this future month
+Date.prototype.amIFutureMonth  = Date.prototype.isFutureMonth = function(d) {
+	if ((d.getFullYear() > this.getFullYear()) || (d.getFullYear() == this.getFullYear() && d.getMonth() < this.getMonth())) return true;
+	return false;
+}
+
+
+// Is this future
+Date.prototype.amIFuture = Date.prototype.isFuture = function(d) {
 	return this.getFullYear() < d.getFullYear() ||
 		(this.getFullYear() == d.getFullYear() &&
 			(this.getMonth() < d.getMonth() ||
 				(this.getMonth() == d.getMonth() && this.getDate() < d.getDate())));
 }
 
-Date.prototype.isSatOrSun = function() {
+// Is this past
+Date.prototype.amIpast = Date.prototype.isPast = function(d) {
+	return this.getFullYear() < d.getFullYear() ||
+		(this.getFullYear() == d.getFullYear() &&
+			(this.getMonth() < d.getMonth() ||
+				(this.getMonth() == d.getMonth() && this.getDate() < d.getDate())));
+}
+
+Date.prototype.amISatOrSun =  Date.prototype.isSatOrSun = function() {
 	return this.getDay() == 0 || this.getDay() == 6;
 }
 
-Date.prototype.isSun = function() {
+Date.prototype.amISun = Date.prototype.isSun = function() {
 	return this.getDay() == 0;
 }
 
-Date.prototype.isMon = function() {
+Date.prototype.amIMon = Date.prototype.isMon = function() {
 	return this.getDay() == 1;
 }
 
-Date.prototype.isTue = function() {
+Date.prototype.amITue = Date.prototype.isTue = function() {
 	return this.getDay() == 2;
 }
 
-Date.prototype.isWed = function() {
+Date.prototype.amIWed = Date.prototype.isWed = function() {
 	return this.getDay() == 3;
 }
 
-Date.prototype.isThu = function() {
+Date.prototype.amIThu = Date.prototype.isThu = function() {
 	return this.getDay() == 4;
 }
 
-Date.prototype.isFri = function() {
+Date.prototype.amIFri = Date.prototype.isFri = function() {
 	return this.getDay() == 5;
 }
 
-Date.prototype.isSat = function() {
+Date.prototype.amISat = Date.prototype.isSat = function() {
 	return this.getDay() == 6;
 }
 

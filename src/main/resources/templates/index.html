@@ -7,6 +7,7 @@ table tr td {
 	padding: 3px;
 	vertical-align: top;
 }
+
 table tr td iframe {
 	min-height: 400px;
 }
@@ -14,25 +15,27 @@ table tr td iframe {
 	<script src="/js/simple-common.js"></script>
 	<script src="/js/simple-html.js"></script>
 	<script src="/js/validation.js"></script>
+	<script src="/js/testwindow.js"></script>
 	<table style="height: 100%">
 		<tr>
 			<td style="width: 40%; height: 100%"><div id="testwindow"></div></td>
-			<td><iframe id="f" src="/static/editor.html"
-					style="width: 99.5%;"> </iframe></td>
+			<td><iframe id="f" src="/static/editor.html" style="width: 99.5%;"></iframe></td>
 		</tr>
 	</table>
-<script src="/js/test-cases.js"></script>
-<script>
 
-//////////////end
-let tw = document.querySelector("#testwindow");
-let d = document.createElement("div");
-tw.appendChild(d);
-d.innerHTML = "Total Tests:" + (w.success + w.fail) 
-if(w.success>0)
-	d.innerHTML += "<br>Total Success: <span style='color:green;'>" + w.success + "</span>";
-if(w.fail>0)
-	d.innerHTML += "<br>Total Fail: <span style='color:red;font-weight:bold;'>" + w.fail + "</span>";
-</script>
+	<script src="/js/test-cases.js"></script>
+	<script>
+		//////////////end
+		w.tw = document.querySelector("#testwindow");
+		w.d = document.createElement("div");
+		w.tw.appendChild(w.d);
+		w.d.innerHTML = "Total Tests:" + (w.t.success() + w.t.fail())
+		if (w.t.success() > 0)
+			w.d.innerHTML += "<br>Total Success: <span style='color:green;'>"
+					+ w.success + "</span>";
+		if (w.t.fail() > 0)
+			w.d.innerHTML += "<br>Total Fail: <span style='color:red;font-weight:bold;'>"
+					+ w.t.fail() + "</span>";
+	</script>
 </body>
 </html>
